@@ -2999,6 +2999,14 @@ fn convert_java_compaction_options_to_rust(
     let batch_size = env
         .call_method(&java_options, "getBatchSize", "()Ljava/util/Optional;", &[])?
         .l()?;
+    let io_buffer_size = env
+        .call_method(
+            &java_options,
+            "getIoBufferSize",
+            "()Ljava/util/Optional;",
+            &[],
+        )?
+        .l()?;
     let defer_index_remap = env
         .call_method(
             &java_options,
@@ -3041,6 +3049,7 @@ fn convert_java_compaction_options_to_rust(
         &materialize_deletions_threshold,
         &num_threads,
         &batch_size,
+        &io_buffer_size,
         &defer_index_remap,
         &compaction_mode,
         &binary_copy_read_batch_bytes,
